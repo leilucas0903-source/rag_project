@@ -1,5 +1,5 @@
 ## 项目目标
-构建一个生产级、可观测、高性能的 RAG（检索增强生成）系统。
+基于 FastAPI 的 RAG 问答系统：FAQ 直查 + RAG 回退，采用 MySQL/Milvus/Redis 架构，支持结构化日志与 Prometheus 监控
 
 ## 技术栈
 * **API Framework**: FastAPI
