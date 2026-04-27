@@ -1,0 +1,23 @@
+# Python 缓存与字节码
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 日志文件
+logs/
+*.log
+
+# 环境与配置
+.env
+.venv/
+venv/
+.pytest_cache/
+
+# 你的项目特有配置
+# 如果 config.dev.yaml 里有敏感密码，建议把它也加入忽略列表
+# 或者只上传一个 config.dev.yaml.example
+configs/config.dev.yaml
+
+# 你的本地开发文件
+log_test.py

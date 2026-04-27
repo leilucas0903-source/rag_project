@@ -1,0 +1,46 @@
+
+#由于在MVP_project_11中部署了docker中的milvus，所以这里只需要部署MySQL
+
+
+# version: '3.8'
+
+
+
+services:
+  # 1. MySQL: 用于存储高频 FAQ 和业务元数据
+  mysql:
+    image: mysql:8.0
+    container_name: rag_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: rag_project_db
+    restart: always
+
+  # 2. Milvus Standalone: 用于向量存储与检索
+  # 注意：Milvus 依赖 Etcd 和 Minio
+  # milvus:
+  #   image: milvusdb/milvus:latest
+  #   container_name: rag_milvus
+  #   ports:
+  #     - "19530:19530"
+  #   environment:
+  #     ETCD_USE_EMBEDDED: "true"
+  #     MINIO_ADDRESS: "minio:9000"
+  #   depends_on:
+  #     - "etcd"
+  #     - "minio"
+
+  # etcd:
+  #   container_name: milvus-etcd
+  #   image: quay.io/coreos/etcd:v3.5.0
+  #   command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379
+
+  # minio:
+  #   container_name: milvus-minio
+  #   image: minio/minio:latest
+  #   command: minio server /minio_data
+  #   environment:
+  #     MINIO_ACCESS_KEY: minioadmin
+  #     MINIO_SECRET_KEY: minioadmin
