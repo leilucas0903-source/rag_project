@@ -1,6 +1,16 @@
 from dataclasses import dataclass
 from enum import Enum
 
+"""
+  #### 查询决策模型
+
+  - Intent
+  - RetrievalStrategy
+  - RouteDecision
+"""
+
+
+
 # TODO 将其升级为 Pydantic 的 BaseModel
 
 class Intent(str,Enum): 

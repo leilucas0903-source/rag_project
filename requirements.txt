@@ -1,4 +1,4 @@
-# Web Framework
+﻿# Web Framework
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 prometheus-client==0.20.0
@@ -12,3 +12,11 @@ pyyaml==6.0.2
 
 # Logging
 structlog==24.4.0
+
+PyMySQL
+pymilvus
+numpy
+
+openai
+httpx
+sentence-transformers

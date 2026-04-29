@@ -1,5 +1,12 @@
 from dataclasses import dataclass
 
+"""
+  #### 查询结果模型
+
+  - RetrievedDoc
+  - GeneratedAnswer
+"""
+
 # TODO 将其升级为 Pydantic 的 BaseModel
 
 @dataclass

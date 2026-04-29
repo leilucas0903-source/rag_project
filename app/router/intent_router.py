@@ -1,19 +1,14 @@
-from app.models.query import Intent,RetrievalStrategy,RouteDecision
-
-FAQ_MAP = {
-    "你是谁": "我是你的RAG助手。",
-    "系统健康吗": "系统当前健康。"
-}
-
+from app.models.query import Intent, RetrievalStrategy, RouteDecision
 class IntentRouter:
-    def route(self,query:str) -> RouteDecision:
+    def route(self, query: str) -> RouteDecision:
         q = query.strip()
-        if q in FAQ_MAP:
+        # Day2 Step1: 这里只保留轻量路由判断，不再直接返回 FAQ 内容
+        if len(q) <= 20:
             return RouteDecision(
                 intent=Intent.FAQ,
                 strategy=RetrievalStrategy.DIRECT_FAQ,
-                confidence=0.95,
-                direct_answer=FAQ_MAP[q]
+                confidence=0.80,
+                direct_answer=None,
             )
         return RouteDecision(
             intent=Intent.KNOWLEDGE,
@@ -21,4 +16,3 @@ class IntentRouter:
             confidence=0.60,
             direct_answer=None,
         )
-    
