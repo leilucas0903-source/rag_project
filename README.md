@@ -16,6 +16,35 @@
 - [x] Mock 主链路联调
 
 ## 下一步计划
-- [ ] 接入 MySQL FAQ 检索
-- [ ] 接入 Milvus 向量检索
-- [ ] 实现 RRF 混合重排算法
+- [x] 接入 MySQL FAQ 检索
+- [x] 接入 Milvus 向量检索
+- [x] 实现 RRF 混合重排算法
+
+### 今日任务概述(Day 2)
+
+- 修复 MySQL 连接与 FAQ 初始化环境
+- 接入最小真实 RAG 链路
+- 抽离离线索引流数据结构
+
+### 关键改动
+
+- 修复 Docker / .env.example / 初始化 SQL / test_sql.py
+- 新增 indexing 模块与 scripts/reindex.py
+- HybridRetriever 改为真实 embedding 检索
+- LLMClient 改为真实调用骨架
+- 新增 app/models/document.py
+- 修复并重建 Record.md
+
+### 当前结果
+
+- FAQ 链路可用
+- MySQL 连接稳定
+- reindex 入口可用
+- RAG 主链路已从 mock 走向真实实现
+
+
+### 后续计划
+
+- 解耦 generation 层
+- 准备真实文档并完成 reindex
+- 验证 /query 的完整 RAG 路径
