@@ -605,3 +605,64 @@
 - 下一步：
   - 优先从 `scripts/reindex.py`、`app/indexing/`、`app/retrieval/` 这条主链开始逐个消化 TODO
   - 按“先离线入库、再在线检索、最后生成优化”的顺序继续推进
+
+### [P1-10] 补齐目标目录骨架与占位文件
+
+- 时间：2026-05-05
+- 目标：让当前仓库结构逐步对齐 roadmap 中的目标工程结构，先把目录骨架和最小占位文件补齐，后续按模块逐步落地实现。
+- 变更内容：
+  - 补充 middleware 占位：
+    - `app/middleware/request_context.py`
+  - 补充 router 占位：
+    - `app/router/threshold_policy.py`
+  - 补充 retrieval 占位：
+    - `app/retrieval/reranker.py`
+  - 补充 cache 占位：
+    - `app/cache/redis_cache.py`
+    - `app/cache/cache_keys.py`
+  - 补充 eval 占位：
+    - `app/eval/dataset.py`
+    - `app/eval/offline_eval.py`
+    - `app/eval/online_eval.py`
+  - 补充 tests 占位：
+    - `app/tests/test_api.py`
+    - `app/tests/test_router.py`
+    - `app/tests/test_retrieval.py`
+    - `app/tests/test_generation.py`
+  - 补充 scripts 占位：
+    - `scripts/warmup_cache.py`
+    - `scripts/replay_logs.py`
+  - 补充 configs 占位：
+    - `configs/config.dev.yaml`
+    - `configs/config.prod.yaml`
+    - `configs/prompts.yaml`
+  - 同步更新 `README.md` 里的目录结构说明。
+- 涉及文件：
+  - `app/middleware/request_context.py`
+  - `app/router/threshold_policy.py`
+  - `app/retrieval/reranker.py`
+  - `app/cache/redis_cache.py`
+  - `app/cache/cache_keys.py`
+  - `app/eval/dataset.py`
+  - `app/eval/offline_eval.py`
+  - `app/eval/online_eval.py`
+  - `app/tests/test_api.py`
+  - `app/tests/test_router.py`
+  - `app/tests/test_retrieval.py`
+  - `app/tests/test_generation.py`
+  - `scripts/warmup_cache.py`
+  - `scripts/replay_logs.py`
+  - `configs/config.dev.yaml`
+  - `configs/config.prod.yaml`
+  - `configs/prompts.yaml`
+  - `README.md`
+- 当前结果：
+  - 仓库结构开始与 roadmap 中的目标目录对齐。
+  - 后续可以按目录逐模块填充实现，而不是边写边长目录。
+  - README 与真实仓库结构更一致。
+- 验证方式：
+  - 查看目录树与新增占位文件
+  - 检查 README 中目录结构是否已同步
+- 下一步：
+  - 先从 `threshold_policy.py`、`bm25_retriever.py`、`reranker.py` 开始补检索决策层
+  - 然后再推进 cache / eval / tests 的真实实现

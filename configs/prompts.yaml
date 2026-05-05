@@ -1,0 +1,6 @@
+# Prompt 配置占位文件
+#
+# TODO:
+# 1. 后续将 generation/prompt_builder.py 中的固定文案迁移到这里。
+# 2. 按 FAQ / RAG / fallback 等场景拆分 prompt 模板。
+
