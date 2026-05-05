@@ -1,4 +1,4 @@
-﻿from app.models.document import DocumentChunk, SourceDocument
+from app.models.document import DocumentChunk, SourceDocument
 
 
 class TextSplitter:
@@ -32,6 +32,7 @@ class TextSplitter:
             end = min(len(text), start + self.chunk_size)
             chunk_text = text[start:end].strip()
             if chunk_text:
+                # TODO: 当前是纯字符窗口切分；后续升级为段落/标题/语义切分，并记录 offset metadata。
                 chunks.append(
                     DocumentChunk(
                         chunk_id=f"{document.doc_id}#chunk-{index}",

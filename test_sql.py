@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 """测试 MySQL FAQ Retriever 连接。"""
 
 import sys

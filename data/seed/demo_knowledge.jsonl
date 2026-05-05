@@ -1,0 +1,5 @@
+{"id":"rag-intro","source":"seed/rag-intro","text":"RAG 是 Retrieval-Augmented Generation，即检索增强生成。它的基本流程是先根据用户问题从知识库中检索相关片段，再把检索结果交给大模型生成答案。这样可以降低模型幻觉，并让回答更贴近企业私有知识。"}
+{"id":"faq-vs-rag","source":"seed/faq-vs-rag","text":"FAQ 更适合固定问题和固定答案，通常使用精确匹配、模糊匹配或规则命中。RAG 更适合开放问题，需要从文档中检索上下文后再生成回答。FAQ 和 RAG 可以组合：先查 FAQ，FAQ 未命中时再回退到 RAG。"}
+{"id":"milvus-role","source":"seed/milvus-role","text":"Milvus 是向量数据库，适合存储文档切片的 embedding，并支持相似度检索。在一个最小 RAG 项目里，文档先被切分成 chunk，再经过 embedding 编码写入 Milvus，查询时再用 query embedding 去搜索最相关的 chunk。"}
+{"id":"reindex-flow","source":"seed/reindex-flow","text":"最小离线索引流程通常包括四步：加载原始文档、文本切分、生成 embedding、写入向量库。只有完成这条 reindex 链路，在线查询阶段的向量检索才有真实数据可查。"}
+{"id":"fallback-answer","source":"seed/fallback-answer","text":"如果系统没有配置真实大模型接口，最小可用做法是返回检索到的文档片段作为 fallback。这样虽然还没有自然语言生成能力，但可以先验证检索链路、召回质量和上下文组织是否正常。"}

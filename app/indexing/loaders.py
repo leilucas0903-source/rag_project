@@ -1,5 +1,5 @@
-﻿from pathlib import Path
 import json
+from pathlib import Path
 
 from app.models.document import SourceDocument
 
@@ -26,6 +26,7 @@ class DocumentLoader:
         if file_path.suffix.lower() == ".jsonl":
             return self._load_jsonl(file_path)
 
+        # TODO: 后续补 doc_id 冲突规避、编码探测、以及更丰富的 source metadata。
         text = file_path.read_text(encoding="utf-8")
         return [
             SourceDocument(

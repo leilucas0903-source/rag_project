@@ -1,26 +1,26 @@
 from fastapi import APIRouter, Request
 
-from app.api.schemas import QueryRequest, QueryResponse, DocItem
-from app.router.intent_router import IntentRouter
+from app.api.schemas import DocItem, QueryRequest, QueryResponse
+from app.core.logger import get_logger
+from app.generation.llm_client import LLMClient
 from app.models.query import RetrievalStrategy
 from app.retrieval.hybrid_retriever import HybridRetriever
-from app.generation.llm_client import LLMClient
 from app.retrieval.mysql_faq_retriever import MysqlFAQRetriever
-from app.core.logger import get_logger
+from app.router.intent_router import IntentRouter
 
 logger = get_logger(__name__)
 
 router = APIRouter(tags=["query"])
 
+# TODO: 后续改成依赖注入或 service 层，避免模块级单例在测试和扩展时变得难控制。
 intent_router = IntentRouter()
 faq_retriever = MysqlFAQRetriever()
-retriever = HybridRetriever()
 llm = LLMClient()
+retriever = HybridRetriever()
 
 
 @router.post("/query", response_model=QueryResponse)
 def query_api(req: QueryRequest, request: Request):
-    
     trace_id = getattr(request.state, "request_id", "-")
     decision = intent_router.route(req.query)
 
@@ -40,6 +40,7 @@ def query_api(req: QueryRequest, request: Request):
                 retrieved_docs=[],
             )
 
+    # TODO: 后续补查询编排层，统一处理 FAQ 未命中、RAG 检索、生成、降级策略。
     docs = retriever.retrieve(req.query, req.top_k)
     ans = llm.generator(req.query, docs)
 
@@ -53,9 +54,10 @@ def query_api(req: QueryRequest, request: Request):
         citations=ans.citations,
         retrieved_docs=[
             DocItem(
-                doc_id=d.doc_id, 
-                score=float(d.score), 
-                snippet=d.snippet
-            )for d in docs 
+                doc_id=d.doc_id,
+                score=float(d.score),
+                snippet=d.snippet,
+            )
+            for d in docs
         ],
     )

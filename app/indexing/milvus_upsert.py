@@ -1,4 +1,4 @@
-﻿from pymilvus import DataType, MilvusClient
+from pymilvus import DataType, MilvusClient
 
 from app.core.config import settings
 from app.core.logger import get_logger
@@ -64,6 +64,9 @@ class MilvusUpserter:
             }
             for chunk, vector in zip(chunks, vectors)
         ]
+        # TODO: 当前每批写入后立即 flush，优先保证数据可见；后续改为统一 flush / bulk load 提升性能。
+        # TODO: 后续补去重 / 幂等策略，避免重复 reindex 时产生脏数据或不一致状态。
         self.client.insert(collection_name=self.collection_name, data=rows)
+        self.client.flush(collection_name=self.collection_name)
         logger.info(f"Inserted {len(rows)} chunks into Milvus")
         return len(rows)

@@ -1,6 +1,6 @@
-﻿import argparse
-from pathlib import Path
+import argparse
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -24,30 +24,42 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
+    embedder = EmbeddingWorker()
     loader = DocumentLoader()
     splitter = TextSplitter(chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)
-    embedder = EmbeddingWorker()
     upserter = MilvusUpserter()
 
     documents = loader.load(args.input_path)
-    print(f"加载文档数: {len(documents)}")
     if not documents:
-        print("没有可索引文档，退出")
+        print("Error: 未找到任何文档。")
         return
 
     chunks = splitter.split_documents(documents)
-    print(f"切分后 chunk 数: {len(chunks)}")
     if not chunks:
-        print("切分后没有有效 chunk，退出")
+        print("Error: 文档切分后没有可入库的 chunk。")
         return
 
-    vectors = embedder.embed_texts([chunk.text for chunk in chunks])
-    upserter.ensure_collection(drop_old=args.drop_old)
-    inserted = upserter.upsert_chunks(chunks, vectors)
+    print(f"待处理 Chunks 总数: {len(chunks)}")
 
-    print(f"已写入 Milvus chunk 数: {inserted}")
-    print(f"集合名: {settings.milvus_collection}")
-    print("重建完成")
+    upserter.ensure_collection(drop_old=args.drop_old)
+
+    # TODO: 后续将 batch_size 做成命令行参数或配置项，便于按机器资源调优。
+    batch_size = 64
+    total_inserted = 0
+
+    for i in range(0, len(chunks), batch_size):
+        batch_chunks = chunks[i : i + batch_size]
+        batch_texts = [c.text for c in batch_chunks]
+
+        # TODO: 后续补 tqdm / logging / dry-run，增强大规模重建时的可观测性。
+        batch_vectors = embedder.embed_texts(batch_texts)
+        inserted = upserter.upsert_chunks(batch_chunks, batch_vectors)
+        total_inserted += inserted
+
+    print("\n重建完成！")
+    print(f"- 原始文档数: {len(documents)}")
+    print(f"- 成功写入 Chunk 数: {total_inserted}")
+    print(f"- Collection: {settings.milvus_collection}")
 
 
 if __name__ == "__main__":

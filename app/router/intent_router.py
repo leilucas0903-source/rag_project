@@ -1,8 +1,12 @@
 from app.models.query import Intent, RetrievalStrategy, RouteDecision
+
+
 class IntentRouter:
     def route(self, query: str) -> RouteDecision:
         q = query.strip()
-        # Day2 Step1: 这里只保留轻量路由判断，不再直接返回 FAQ 内容
+
+        # TODO: 当前仅按长度做最小路由；后续抽到 threshold_policy，
+        # TODO: 并结合 FAQ 命中分数、关键词规则或小模型分类一起决策。
         if len(q) <= 20:
             return RouteDecision(
                 intent=Intent.FAQ,
